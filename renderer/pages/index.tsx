@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import Link from 'next/link'
-import Layout from '../components/Layout'
+import Layout from '../components/constants/Layout'
 import HomeComp from '../components/Home'
 
 const IndexPage = () => {

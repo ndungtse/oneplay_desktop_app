@@ -26,7 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const player_1 = require("./player");
+// import { PlayerInit } from './player';
 // Native
 const path_1 = require("path");
 const url_1 = require("url");
@@ -62,7 +62,7 @@ electron_1.app.on('ready', async () => {
     // mainWindow.webContents.openDevTools()
     try {
         const name = await (0, electron_devtools_installer_1.default)(electron_devtools_installer_1.REACT_DEVELOPER_TOOLS);
-        (0, player_1.PlayerInit)(mainWindow);
+        // PlayerInit(mainWindow);
         console.log(`Added Extension:  ${name}`);
     }
     catch (error) {
