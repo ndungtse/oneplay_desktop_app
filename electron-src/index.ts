@@ -2,7 +2,7 @@
 // Native
 import { join } from 'path'
 import { format } from 'url'
-import installExtension, { REACT_DEVELOPER_TOOLS, } from 'electron-devtools-installer';
+// import installExtension, { REACT_DEVELOPER_TOOLS, } from 'electron-devtools-installer';
 // Packages
 import { BrowserWindow, app, ipcMain, IpcMainEvent, } from 'electron'
 import isDev from 'electron-is-dev'
@@ -20,7 +20,7 @@ app.on('ready', async () => {
       contextIsolation: false,
       preload: join(__dirname, 'preload.js'),
     },
-    icon: join(__dirname, 'desk.ico'),
+    icon: join(__dirname, 'icon.ico'),
   })
 
   console.log(__dirname);
@@ -39,14 +39,14 @@ app.on('ready', async () => {
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 
-  try {
-    const name = await installExtension(REACT_DEVELOPER_TOOLS);
-    // PlayerInit(mainWindow);
-    console.log(`Added Extension:  ${name}`);
-  } catch (error) {
-    console.log('Error ocurred in installing extension');
+  // try {
+  //   const name = await installExtension(REACT_DEVELOPER_TOOLS);
+  //   // PlayerInit(mainWindow);
+  //   console.log(`Added Extension:  ${name}`);
+  // } catch (error) {
+  //   console.log('Error ocurred in installing extension');
 
-  }
+  // }
   // createMenu()
 
 })

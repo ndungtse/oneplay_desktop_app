@@ -45,9 +45,23 @@
 	},
 	"build": {
 		"asar": true,
+		"appId": "com.oneplay.app",
+		"win": {
+			"target": [
+				"nsis"
+			],
+			"icon": "main/icon.ico"
+		},
 		"files": [
 			"main",
 			"renderer/out"
-		]
+		],
+		"nsis": {
+			"oneClick": true,
+			"installerIcon": "main/icon.ico",
+			"uninstallerIcon": "main/icon.ico",
+			"license": "license.md",
+			"allowToChangeInstallationDirectory": false
+		}
 	}
 }
