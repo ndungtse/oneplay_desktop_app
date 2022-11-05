@@ -16,12 +16,13 @@ const electron_next_1 = __importDefault(require("electron-next"));
 electron_1.app.on('ready', async () => {
     await (0, electron_next_1.default)('./renderer');
     const mainWindow = new electron_1.BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 156,
+        height: 764,
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: false,
             preload: (0, path_1.join)(__dirname, 'preload.js'),
+            devTools: process.env.NODE_ENV === 'development' ? true : false,
         },
         icon: (0, path_1.join)(__dirname, 'icon.ico'),
     });

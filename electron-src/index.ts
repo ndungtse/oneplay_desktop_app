@@ -13,12 +13,13 @@ app.on('ready', async () => {
   await prepareNext('./renderer')
 
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1560,
+    height: 764,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: false,
       preload: join(__dirname, 'preload.js'),
+      devTools: process.env.NODE_ENV === 'development'? true : false,
     },
     icon: join(__dirname, 'icon.ico'),
   })

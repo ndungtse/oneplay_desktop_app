@@ -50,7 +50,15 @@
 			"target": [
 				"nsis"
 			],
-			"icon": "main/icon.ico"
+			"icon": "main/icon.ico",
+			"publisherName": "Ndungutse Charles"
+		},
+		"linux": {
+			"target": [
+				"deb"
+			],
+			"category": "AudioVideo",
+			"icon": "main/icon.png"
 		},
 		"files": [
 			"main",
