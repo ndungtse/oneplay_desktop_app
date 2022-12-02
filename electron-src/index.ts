@@ -22,6 +22,7 @@ app.on('ready', async () => {
       devTools: process.env.NODE_ENV === 'development'? true : false,
     },
     icon: join(__dirname, 'icon.ico'),
+    titleBarStyle: 'hidden',
   })
 
   console.log(__dirname);

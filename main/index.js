@@ -16,7 +16,7 @@ const electron_next_1 = __importDefault(require("electron-next"));
 electron_1.app.on('ready', async () => {
     await (0, electron_next_1.default)('./renderer');
     const mainWindow = new electron_1.BrowserWindow({
-        width: 156,
+        width: 1560,
         height: 764,
         webPreferences: {
             nodeIntegration: false,
