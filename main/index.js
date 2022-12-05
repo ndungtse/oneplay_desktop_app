@@ -12,11 +12,10 @@ const url_1 = require("url");
 const electron_1 = require("electron");
 const electron_is_dev_1 = __importDefault(require("electron-is-dev"));
 const electron_next_1 = __importDefault(require("electron-next"));
-// Prepare the renderer once the app is ready
-electron_1.app.on('ready', async () => {
+const createWindow = async () => {
     await (0, electron_next_1.default)('./renderer');
     const mainWindow = new electron_1.BrowserWindow({
-        width: 1560,
+        width: 1160,
         height: 764,
         webPreferences: {
             nodeIntegration: false,
@@ -25,9 +24,10 @@ electron_1.app.on('ready', async () => {
             devTools: process.env.NODE_ENV === 'development' ? true : false,
         },
         icon: (0, path_1.join)(__dirname, 'icon.ico'),
+        titleBarStyle: 'hidden',
+        minWidth: 400,
+        minHeight: 400,
     });
-    console.log(__dirname);
-    console.log((0, path_1.join)(__dirname, 'preload.js'));
     const url = electron_is_dev_1.default
         ? 'http://localhost:8000/'
         : (0, url_1.format)({
@@ -36,34 +36,49 @@ electron_1.app.on('ready', async () => {
             slashes: true,
         });
     await mainWindow.loadURL(url);
-    // Open the DevTools.
-    // mainWindow.webContents.openDevTools()
-    // try {
-    //   const name = await installExtension(REACT_DEVELOPER_TOOLS);
-    //   // PlayerInit(mainWindow);
-    //   console.log(`Added Extension:  ${name}`);
-    // } catch (error) {
-    //   console.log('Error ocurred in installing extension');
-    // }
-    // createMenu()
+    return mainWindow;
+};
+let win;
+electron_1.app.on('ready', async () => {
+    const mainWindow = await createWindow();
+    win = mainWindow;
+    const tray = new electron_1.Tray((0, path_1.join)(__dirname, 'icon.ico'));
+    tray.addListener('click', () => {
+        mainWindow.show();
+    });
+    const contextMenu = electron_1.Menu.buildFromTemplate([
+        { label: 'Show Player', type: 'normal', click: () => { mainWindow.show(); } },
+        { label: 'exit', type: 'normal', click: () => { electron_1.app.quit(); } },
+    ]);
+    tray.setToolTip('Oneplay');
+    tray.setContextMenu(contextMenu);
 });
-// Quit the app once all windows are closed
-electron_1.app.on('window-all-closed', electron_1.app.quit);
+electron_1.app.on('window-all-closed', () => {
+    electron_1.app.dock.hide();
+    win.hide();
+});
 // listen the channel `message` and resend the received message to the renderer process
 electron_1.ipcMain.on('message', (event, message) => {
     console.log(message);
     setTimeout(() => event.sender.send('message', 'hi from electron'), 500);
 });
+electron_1.ipcMain.on('close', () => {
+    electron_1.app.quit();
+});
+electron_1.ipcMain.on('hide', () => win.hide());
+electron_1.ipcMain.on('show', () => win.show());
+electron_1.ipcMain.on('minimize', () => win.minimize());
+electron_1.ipcMain.on('maximize', () => win.maximize());
 // function createMenu() {
 //   const application: MenuItemConstructorOptions = {
-//     label: "Icon Generator",
+//     icon: join(__dirname, 'icon.ico'),
 //     submenu: [
 //       {
 //         label: "New",
 //         accelerator: "Ctrl+N",
 //         click: () => {
 //           if (window === null) {
-//             // createWindow()
+//             createWindow()
 //           }
 //         }
 //       },

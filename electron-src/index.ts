@@ -4,29 +4,26 @@ import { join } from 'path'
 import { format } from 'url'
 // import installExtension, { REACT_DEVELOPER_TOOLS, } from 'electron-devtools-installer';
 // Packages
-import { BrowserWindow, app, ipcMain, IpcMainEvent, } from 'electron'
+import { BrowserWindow, app, ipcMain, IpcMainEvent, Tray, Menu } from 'electron'
 import isDev from 'electron-is-dev'
 import prepareNext from 'electron-next'
 
-// Prepare the renderer once the app is ready
-app.on('ready', async () => {
+const createWindow = async () => {
   await prepareNext('./renderer')
-
   const mainWindow = new BrowserWindow({
-    width: 1560,
+    width: 1160,
     height: 764,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: false,
       preload: join(__dirname, 'preload.js'),
-      devTools: process.env.NODE_ENV === 'development'? true : false,
+      devTools: process.env.NODE_ENV === 'development' ? true : false,
     },
     icon: join(__dirname, 'icon.ico'),
     titleBarStyle: 'hidden',
+    minWidth: 400,
+    minHeight: 400,
   })
-
-  console.log(__dirname);
-  console.log(join(__dirname, 'preload.js'));
 
   const url = isDev
     ? 'http://localhost:8000/'
@@ -37,24 +34,30 @@ app.on('ready', async () => {
     })
 
   await mainWindow.loadURL(url);
+  return mainWindow;
+}
 
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+let win: BrowserWindow;
+app.on('ready', async () => {
+  const mainWindow = await createWindow();
+  win = mainWindow;
+  const tray = new Tray(join(__dirname, 'icon.ico'));
 
-  // try {
-  //   const name = await installExtension(REACT_DEVELOPER_TOOLS);
-  //   // PlayerInit(mainWindow);
-  //   console.log(`Added Extension:  ${name}`);
-  // } catch (error) {
-  //   console.log('Error ocurred in installing extension');
-
-  // }
-  // createMenu()
-
+  tray.addListener('click', () => {
+    mainWindow.show()
+  })
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Show Player', type: 'normal', click: () => { mainWindow.show() } },
+    { label: 'exit', type: 'normal', click: () => { app.quit() } },
+  ])
+  tray.setToolTip('Oneplay')
+  tray.setContextMenu(contextMenu)
 })
 
-// Quit the app once all windows are closed
-app.on('window-all-closed', app.quit)
+app.on('window-all-closed', () => {
+  app.dock.hide();
+  win.hide();
+})
 
 // listen the channel `message` and resend the received message to the renderer process
 ipcMain.on('message', (event: IpcMainEvent, message: any) => {
@@ -62,16 +65,25 @@ ipcMain.on('message', (event: IpcMainEvent, message: any) => {
   setTimeout(() => event.sender.send('message', 'hi from electron'), 500)
 })
 
+ipcMain.on('close', () => {
+  app.quit()
+});
+ipcMain.on('hide', ()=> win.hide())
+ipcMain.on('show', ()=> win.show())
+ipcMain.on('minimize', ()=> win.minimize())
+ipcMain.on('maximize', ()=> win.maximize())
+
+
 // function createMenu() {
 //   const application: MenuItemConstructorOptions = {
-//     label: "Icon Generator",
+//     icon: join(__dirname, 'icon.ico'),
 //     submenu: [
 //       {
 //         label: "New",
 //         accelerator: "Ctrl+N",
 //         click: () => {
 //           if (window === null) {
-//             // createWindow()
+//             createWindow()
 //           }
 //         }
 //       },
