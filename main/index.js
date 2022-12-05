@@ -48,11 +48,17 @@ electron_1.app.on('ready', async () => {
     });
     const contextMenu = electron_1.Menu.buildFromTemplate([
         { label: 'Show Player', type: 'normal', click: () => { mainWindow.show(); } },
-        { label: 'exit', type: 'normal', click: () => { electron_1.app.quit(); } },
+        { label: 'exit Ctrl+Q', type: 'normal', click: () => { electron_1.app.quit(); } },
     ]);
     tray.setToolTip('Oneplay');
     tray.setContextMenu(contextMenu);
+    electron_1.globalShortcut.register('CommandOrControl+Q', () => {
+        electron_1.app.quit();
+    });
 });
+// globalShortcut.register('MediaPlayPause', () => {
+//   win.webContents.send('playPause')
+// })
 electron_1.app.on('window-all-closed', () => {
     electron_1.app.dock.hide();
     win.hide();
@@ -69,6 +75,7 @@ electron_1.ipcMain.on('hide', () => win.hide());
 electron_1.ipcMain.on('show', () => win.show());
 electron_1.ipcMain.on('minimize', () => win.minimize());
 electron_1.ipcMain.on('maximize', () => win.maximize());
+electron_1.ipcMain.on('unmaximize', () => win.unmaximize());
 // function createMenu() {
 //   const application: MenuItemConstructorOptions = {
 //     icon: join(__dirname, 'icon.ico'),

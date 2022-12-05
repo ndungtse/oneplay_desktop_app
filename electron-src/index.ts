@@ -4,7 +4,7 @@ import { join } from 'path'
 import { format } from 'url'
 // import installExtension, { REACT_DEVELOPER_TOOLS, } from 'electron-devtools-installer';
 // Packages
-import { BrowserWindow, app, ipcMain, IpcMainEvent, Tray, Menu } from 'electron'
+import { BrowserWindow, app, ipcMain, IpcMainEvent, Tray, Menu, globalShortcut } from 'electron'
 import isDev from 'electron-is-dev'
 import prepareNext from 'electron-next'
 
@@ -48,11 +48,19 @@ app.on('ready', async () => {
   })
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Show Player', type: 'normal', click: () => { mainWindow.show() } },
-    { label: 'exit', type: 'normal', click: () => { app.quit() } },
+    { label: 'exit Ctrl+Q', type: 'normal', click: () => { app.quit() } },
   ])
   tray.setToolTip('Oneplay')
   tray.setContextMenu(contextMenu)
+  
+  globalShortcut.register('CommandOrControl+Q', () => {
+    app.quit();
+  })
 })
+
+// globalShortcut.register('MediaPlayPause', () => {
+//   win.webContents.send('playPause')
+// })
 
 app.on('window-all-closed', () => {
   app.dock.hide();
@@ -72,6 +80,7 @@ ipcMain.on('hide', ()=> win.hide())
 ipcMain.on('show', ()=> win.show())
 ipcMain.on('minimize', ()=> win.minimize())
 ipcMain.on('maximize', ()=> win.maximize())
+ipcMain.on('unmaximize', ()=> win.unmaximize())
 
 
 // function createMenu() {
