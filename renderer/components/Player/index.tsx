@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { BiPause, BiPlay } from 'react-icons/bi'
 import { MdAudiotrack } from 'react-icons/md'
 import { usePlayer } from '../../contexts/PlayerContext'
+import useKeyPress from '../../utils/hooks/usePress'
 import Controls from './Controls'
 
 const Player = () => {
@@ -19,11 +20,14 @@ const Player = () => {
     playerState,
     setPlayerState,
     currentPlaying,
-    setCurrentPlaying,
     handleNext,
+    handlePrev
   } = usePlayer()
+  const pauseKey = useKeyPress(' ');
+  const nextKey = useKeyPress('n')
+  const prevKey = useKeyPress('p')
 
-  const isVideo = currentPlaying.file.type.includes('video')
+  const isVideo = currentPlaying?.file?.type.includes('video')
 
   const videoElement = videoRef?.current
 
@@ -75,16 +79,16 @@ const Player = () => {
   }, [currentPlaying])
 
   useEffect(() => {
-    if (typeof window !== undefined) {
-      window.addEventListener('keydown', (e: KeyboardEvent) => {
-        console.log(e.code)
-        if (e.code === 'KeyD') {
-          e.preventDefault()
-          togglePlay()
-        }
+    if (pauseKey) {
+      window.scrollTo({
+        top: 0,
+        left: 0,
       })
+      togglePlay()
     }
-  }, [])
+    if(nextKey) handleNext();
+    if(prevKey) handlePrev();
+  }, [pauseKey, nextKey, prevKey])
 
   return (
     <div className="flex w-full flex-col">
@@ -112,7 +116,7 @@ const Player = () => {
               id="video"
               ref={videoRef}
               autoPlay
-              className=" my-auto max-h-full aspect-video"
+              className=" my-auto max-h-full"
               src={currentPlaying.url}
               onTimeUpdate={handleOnTimeUpdate}
             />
@@ -149,12 +153,12 @@ const Player = () => {
         <Controls
           element={curRef}
           player={playerRef?.current}
-          file={currentPlaying.file}
+          file={currentPlaying.file!}
           togglePlay={togglePlay}
           hide={hide}
         />
       </div>
-      <p> {currentPlaying.file.name} </p>
+      <p> {currentPlaying.file?.name} </p>
     </div>
   )
 }

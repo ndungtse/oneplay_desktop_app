@@ -23,7 +23,7 @@ const HomeComp = () => {
 	};
 
 	return (
-		<div className='flex h-[90vh] w-full flex-col overflow-auto pt-11 xtab:flex-row'>
+		<div className='flex h-[92vh] w-full flex-col overflow-auto pt-11 xtab:flex-row'>
 			<div className='flex h-full flex-col items-center justify-center xtab:w-1/2'>
 				{showPlayer ? (
 					<div className='flex w-full items-center justify-center'>
@@ -67,7 +67,7 @@ const HomeComp = () => {
 				)}
 			</div>
 			<span className='h-full w-[1px] bg-blue-400/10'></span>
-			<div className='flex h-full flex-col items-center p-4 xtab:w-1/2'>
+			<div className='flex h-full flex-col items-center px-4 pt-4 xtab:w-1/2'>
 				{files.length === 0 ? (
 					<p className='flex h-full w-full items-center justify-center text-2xl'>
 						No Selected files
@@ -106,7 +106,7 @@ const HomeComp = () => {
 										onChange={onFileInputChange}
 									/>
 								</div>
-								<div className='flex h-[80vh] w-full flex-col overflow-auto'>
+								<div className='flex h-[80vh] w-full flex-col overflow-y-auto'>
 									{files?.map((file: File, index) => (
 										<FileRow
 											key={index}
