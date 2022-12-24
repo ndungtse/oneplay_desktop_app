@@ -7,6 +7,12 @@
 ::-webkit-scrollbar {
   width: 6px;
 }
+.text-xxs{
+  font-size: xx-small;
+}
+.text-xls{
+  font-size: x-small;
+}
 
 .navbar{
   -webkit-app-region: drag;

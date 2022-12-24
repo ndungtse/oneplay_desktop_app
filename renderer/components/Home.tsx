@@ -85,14 +85,14 @@ const HomeComp = () => {
 								className='flex h-full w-full flex-col'
 							>
 								<div className='flex w-full items-center justify-between px-4 py-2'>
-									<p className='text-xl font-semibold text-main'>
+									<p className='text-sm font-semibold text-main'>
 										Selected files
 									</p>
 									<label
 										htmlFor='files'
-										className='flex cursor-pointer items-center rounded-md bg-main px-2'
+										className='flex cursor-pointer items-center rounded-md bg-main px-2 text-xs'
 									>
-										<span className='-translate-y-[1px] text-2xl'>+</span>
+										<span className='-translate-y-[1px] text-lg'>+</span>
 										<span className='ml-2'>ADD</span>
 									</label>
 									<input

@@ -3,7 +3,7 @@
 	"main": "main/index.js",
 	"productName": "Oneplay",
 	"name": "oneplay",
-	"version": "1.0.0",
+	"version": "1.0.3",
 	"description": "Oneplay is a music player for Windows, Mac and Linux.",
 	"author": "Ndungutse Charles",
 	"scripts": {

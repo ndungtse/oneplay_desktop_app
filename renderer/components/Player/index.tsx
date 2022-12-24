@@ -158,7 +158,7 @@ const Player = () => {
           hide={hide}
         />
       </div>
-      <p> {currentPlaying.file?.name} </p>
+      <p className='text-sm font-semibold mt-2'> {currentPlaying.file?.name} </p>
     </div>
   )
 }

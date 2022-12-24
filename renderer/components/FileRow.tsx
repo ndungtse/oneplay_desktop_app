@@ -38,10 +38,10 @@ const FileRow: React.FC<Props> = ({ file, i, setShowPlayer }) => {
 			prevFiles.filter(
 				(pfile: File) => pfile.name !== file.name
 			)) as unknown as File[]);
-      if(isTheFile){
-        setShowPlayer(false)
-        setCurrentPlaying({file: null, url: ''})
-      }
+		if (isTheFile) {
+			setShowPlayer(false);
+			setCurrentPlaying({ file: null, url: "" });
+		}
 	};
 
 	useEffect(() => {
@@ -55,34 +55,35 @@ const FileRow: React.FC<Props> = ({ file, i, setShowPlayer }) => {
 			className={`cursor-pointer mt-4 flex items-center justify-between
      py-2 px-3 hover:bg-stone-800 ${isTheFile && "bg-stone-800"}`}
 		>
-			<div className="flex items-center">
+			<div className='flex items-center'>
 				{isVideo ? (
-					<FaFileVideo className="text-2xl" />
+					<FaFileVideo className='text-2xl' />
 				) : (
-					<MdAudiotrack className="text-2xl" />
+					<MdAudiotrack className='text-2xl' />
 				)}
-				<div className="ml-2 flex flex-col">
-					<p className="'text-xs font-semibold">{file.name}</p>
-					<p className="text-xs font-semibold">
+				<div className='ml-2 flex flex-col'>
+					<p className="text-[0.8em] font-semibold">{file.name}</p>
+					<p className='text-xxs font-semibold'>
 						size: {formatBytes(file.size)}
 					</p>
 				</div>
 			</div>
-			<div className="flex items-center">
+			<div className='flex items-center'>
 				<button
 					onClick={handleSelect}
-					className="ml-3 rounded-full border-2 p-1"
+					className='ml-3 rounded-full border-2 p-1'
 				>
 					{currentPlaying.file?.name === file.name && playerState.isPlaying ? (
-						<BiPause className="text-3xl" />
+						<BiPause className='text-lg' />
 					) : (
-						<BiPlay className="text-3xl" />
+						<BiPlay className='text-lg' />
 					)}
 				</button>
-				<button 
-        onClick={()=> removeFile()}
-        className="bg-red-600 rounded-md p-2 ml-2">
-					<BiTrash size={25} title="remove" />
+				<button
+					onClick={() => removeFile()}
+					className='bg-red-600 rounded-md p-2 ml-2'
+				>
+					<BiTrash size={15} title='remove' />
 				</button>
 			</div>
 		</div>
