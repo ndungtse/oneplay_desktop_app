@@ -24,7 +24,7 @@ const HomeComp = () => {
 
 	return (
 		<div className='flex h-[92vh] w-full flex-col overflow-auto pt-11 xtab:flex-row'>
-			<div className='flex h-full flex-col items-center justify-center xtab:w-1/2'>
+			<div className='flex h-full flex-col items-center justify-center xtab:w-3/5'>
 				{showPlayer ? (
 					<div className='flex w-full items-center justify-center'>
 						<Player />
@@ -67,7 +67,7 @@ const HomeComp = () => {
 				)}
 			</div>
 			<span className='h-full w-[1px] bg-blue-400/10'></span>
-			<div className='flex h-full flex-col items-center px-4 pt-4 xtab:w-1/2'>
+			<div className='flex h-full flex-col items-center px-4 pt-4 xtab:w-2/5'>
 				{files.length === 0 ? (
 					<p className='flex h-full w-full items-center justify-center text-2xl'>
 						No Selected files
