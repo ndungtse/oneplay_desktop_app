@@ -43,7 +43,7 @@ const Navbar = () => {
 						title={isMaximized ? "Restore Down" : "Maximize"}
 						className=' p-2 hover:bg-slate-400/40 cursor-pointer h-[35px] w-[35px] items-center justify-center flex'
 					>
-						{isMaximized ? <VscChromeRestore /> : <BiRectangle />}
+						{isMaximized ? <VscChromeRestore /> : <BiRectangle size={13} />}
 					</button>
 					<button
 						onClick={close}

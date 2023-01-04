@@ -69,7 +69,7 @@ const HomeComp = () => {
 			<span className='h-full w-[1px] bg-blue-400/10'></span>
 			<div className='flex h-full flex-col items-center px-4 pt-4 xtab:w-2/5'>
 				{files.length === 0 ? (
-					<p className='flex h-full w-full items-center justify-center text-2xl'>
+					<p className='flex h-full w-full items-center justify-center text-lg'>
 						No Selected files
 					</p>
 				) : (
