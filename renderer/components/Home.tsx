@@ -3,13 +3,14 @@ import { BiFile } from "react-icons/bi";
 import FileRow from "./FileRow";
 import Navbar from "./constants/NavBar";
 import Player from "./Player";
-import Dropzone from "react-dropzone";
+import Dropzone, { FileRejection } from "react-dropzone";
 import { Curr } from "../utils/types";
 import { usePlayer } from "../contexts/PlayerContext";
 import Multimedia from "./constants/Multimedia";
 
 const HomeComp = () => {
 	const { files, setFiles, showPlayer, setShowPlayer } = usePlayer();
+	const [isDragOver, setIsDragOver] = useState<boolean>(false)
 
 	const onFileInputChange: ChangeEventHandler<HTMLInputElement> = (e: any) => {
 		const selected: File[] = Array.from(e.target.files);
@@ -21,6 +22,27 @@ const HomeComp = () => {
 		const newFiles: File[] = files.concat(acceptedFiles);
 		setFiles(newFiles);
 	};
+	
+	const onDropRejected = (rejectedFiles: FileRejection[]) => {
+		const [file] = rejectedFiles
+
+		setIsDragOver(false)
+
+		global.ipcRenderer.send('message', `
+			${file.file.type} type is not supported.\n
+			Please choose an audio or video file instead.
+			`)
+		// NB: you may use toaster later if added: below there is sonner code example
+		// toast({
+		//   title: `${file.file.type} type is not supported.`,
+		//   description: "Please choose an audio or video file instead.",
+		//   variant: "destructive"
+		// })
+	}
+
+	const onDropAccepted = (acceptedFiles: File[]) => {
+		setIsDragOver(false)
+	}
 
 	return (
 		<div className='flex h-[92vh] w-full flex-col overflow-auto pt-11 xtab:flex-row'>
@@ -33,12 +55,16 @@ const HomeComp = () => {
 					<Dropzone
 						accept={{ "audio/*": [], "video/*": [] }}
 						onDrop={onDrop}
+						onDropRejected={onDropRejected}
+						onDropAccepted={onDropAccepted}
+						onDragEnter={() => setIsDragOver(true)}
+						onDragLeave={() => setIsDragOver(false)}
 						multiple
 					>
 						{({ getRootProps, getInputProps }) => (
 							<div
 								{...getRootProps({ className: "dropzone" })}
-								className='flex h-full w-full items-center justify-center'
+								className={`flex h-full w-full items-center ${isDragOver && 'bg-main/10'} justify-center`}
 							>
 								<label
 									// htmlFor="files"
@@ -47,9 +73,11 @@ const HomeComp = () => {
 									<div className='max-w-[200px] flex'>
 										<Multimedia />
 									</div>
-									<p className='text-center'>
+									{isDragOver ? <p>
+										<span className='font-semibold'>Drop file</span> to upload
+									</p> : <p className='text-center'>
 										Select a file or drag and drop multiple files here
-									</p>
+									</p>}
 								</label>
 								<input
 									{...getInputProps()}

@@ -65,8 +65,7 @@ electron_1.app.on('window-all-closed', () => {
 });
 // listen the channel `message` and resend the received message to the renderer process
 electron_1.ipcMain.on('message', (event, message) => {
-    console.log(message);
-    setTimeout(() => event.sender.send('message', 'hi from electron'), 500);
+    setTimeout(() => event.sender.send('message', message), 500);
 });
 electron_1.ipcMain.on('close', () => {
     electron_1.app.quit();
