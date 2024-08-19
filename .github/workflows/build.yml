@@ -12,4 +12,6 @@ jobs:
     - name: install dependencies
       run: npm install
     - name: build
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: npm run dist
