@@ -36,7 +36,10 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
     handleLoop,
   } = usePlayer()
   const [isFront, setFront] = useState(false)
-  const [hovered, setHovered] = useState(false)
+  const [hovered, setHovered] = useState({
+	volume: false,
+	progress: false
+  })
   const fullKey = useKeyPress('f')
   const muteKey = useKeyPress('m')
   const phone = useMediaQuery('(max-width: 500px)')
@@ -105,25 +108,29 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
 							<BiVolumeFull title='volume' className='text-sm' />
 						)}
 					</div>
-					<Slider
-						min={0}
-						sx={{
-							width: 100,
-							marginLeft: 2,
-							color: "#ff3f00",
-							"& .MuiSlider-thumb": {
-								display: hovered ? "flex" : "none",
-								width: 6,
-								height: 6,
-							},
-						}}
-						max={100}
-						size='small'
-						value={playerState.volume}
-						onChange={(e: Event) => handleVolume(e)}
-						aria-label='Small'
-						valueLabelDisplay='auto'
-					/>
+					<div className="w-full"
+						onMouseOver={() => setHovered((state) => ({ ...state, volume: true }))}
+						onMouseLeave={() => setHovered((state) => ({ ...state, volume: false }))}>
+						<Slider
+							min={0}
+							sx={{
+								width: 100,
+								marginLeft: 2,
+								color: "#ff3f00",
+								"& .MuiSlider-thumb": {
+									display: hovered.volume ? "flex" : "none",
+									width: 6,
+									height: 6,
+								},
+							}}
+							max={100}
+							size='small'
+							value={playerState.volume}
+							onChange={(e: Event) => handleVolume(e)}
+							aria-label='Small'
+							valueLabelDisplay='auto'
+						/>
+					</div>
 				</div>
 				<div className='flex w-1/3 items-center justify-center'>
 					<FaFastBackward
@@ -158,7 +165,7 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
 					</button>
 					<div
 						onClick={() => handleLoop(element)}
-						className='flex cursor-pointer text-lg text-sm ml-2'
+						className='flex cursor-pointer text-lg ml-2'
 					>
 						{playerState.loop === "none" ? (
 							<MdRepeat title='no repeat' />
@@ -184,8 +191,8 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
 				</div>
 			</div>
 			<div
-				onMouseOver={() => setHovered(true)}
-				onMouseLeave={() => setHovered(false)}
+				onMouseOver={() => setHovered((state) => ({ ...state, progress: true }))}
+				onMouseLeave={() => setHovered((state) => ({ ...state, progress: false }))}
 				className='flex w-full items-center'
 			>
 				<p className='text-[0.7em]'>{formatTime(element?.currentTime)}</p>
@@ -194,7 +201,7 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
 						marginX: "2%",
 						color: "#ff3f00",
 						"& .MuiSlider-thumb": {
-							display: hovered ? "flex" : "none",
+							display: hovered.progress ? "flex" : "none",
 							width: 6,
 							height: 6,
 						},
@@ -209,6 +216,7 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
 					value={Number.isNaN(playerState.progress) ? 0 : playerState.progress}
 					aria-label='Small'
 					valueLabelDisplay='auto'
+					valueLabelFormat={(e) => formatTime(e)}
 				/>
 				<p className='text-[0.7em]'>{formatTime(element?.duration)}</p>
 			</div>
